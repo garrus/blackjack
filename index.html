@@ -1,0 +1,186 @@
+<html>
+
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<head>
+<title>BlackJack!</title>
+<script type="text/javascript" src="blackjack_files/vars0000.js"></script>
+<script type="text/javascript" src="blackjack_files/function.js"></script>
+<script type="text/javascript" src="blackjack_files/game0000.js"></script>
+<script type="text/javascript" src="blackjack_files/sound000.js"></script>
+<link type="text/css" rel="stylesheet" href="blackjack_files/style000.css">
+</head>
+<body onkeydown="handleKeyDownEvent(event)" onload="init()">
+<div id="maintitle">
+	<p name="titles" style="font-weight:600;">正在载入游戏资源，请稍候……</p>
+</div>
+<div id="background" style="display:none;">
+
+<div id="board">
+	<table id="historyboard" style="border:1px dashed gray;background-color:#ffd677">
+		<thead>
+			<tr>
+				<td style="width:100px;font-weight:600;color:red;">记分板</td>
+				<td style="width:56px;font-size:10pt;color:blue;text-align:center;"><a style="cursor:pointer;" onclick="clearHistory()">重置<td>
+			<tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>总局数</td>
+				<th><div id="game">0</div></th>
+			</tr><tr>
+				<td>赢</td>
+				<th><div id="win">0</div></th>
+			</tr><tr>
+				<td>输</td>
+				<th><div id="lose">0</div></th>
+			</tr><tr>
+				<td>平</td>
+				<th><div id="draw">0</div></th>
+			</tr><tr>
+				<td>拿到21点次数</td>
+				<th><div id="21">0</div></th>
+			</tr><tr>
+				<td>拿到BJ次数</td>
+				<th><div id="bj">0</div></th>
+			</tr><tr>
+				<td>庄家拿BJ次数</td>
+				<th><div id="bossbj">0</div></th>
+			</tr>
+		</tbody>
+	</table>
+	<div id="musiccontroller" style="background-color:#25b4ff;padding-top:0.1cm;padding-bottom:0.1cm;display:none;">
+		<p>
+			<input type="button" class="controller" name="BGMswitch" value="播放音乐" onclick="playBGM(this)">
+			<input type="button" class="controller" name="soundswitch" value="关闭音效" onclick="closeSound(this)">
+		</p>
+		<p>
+			<input type="button" class="controller" name="volumedown" style="width:42px;" value="音量-" onclick="changeVolume(-400)">
+			<input type="button" class="controller" name="nextBGM" style="width:50px;" value="换一首" onclick="playBGM()" disabled="true">
+			<input type="button" class="controller" name="volumeup" style="width:42px;" value="音量+" onclick="changeVolume(400)">
+		</p>
+	</div>
+	<div>
+		<p>
+			<input type="button" name="white" style="background-color:white;" class="colorbox" value=" " onclick="setBGColor(this.name)">
+			<input type="button" name="#fdf7d6" style="background-color:#fdf7d6;" class="colorbox" value=" " onclick="setBGColor(this.name)">
+			<input type="button" name="#d199ff" style="background-color:#d199ff;" class="colorbox" value=" " onclick="setBGColor(this.name)">
+			<input type="button" name="#dff7a4" style="background-color:#dff7a4;" class="colorbox" value=" " onclick="setBGColor(this.name)">
+			<input type="button" name="#8c8a8a" style="background-color:#8c8a8a;" class="colorbox" value=" " onclick="setBGColor(this.name)">
+			<input type="button" name="black" style="background-color:black;" class="colorbox" value=" " onclick="setBGColor(this.name)">
+		</p>
+	</div>
+	<div style="text-align:center;">
+		<a style="cursor:pointer;text-decoration:underline;color:blue;" onclick="showInstruction()">游戏帮助</a>
+		<br><img style="display:none;" src="blackjack_files/Count000.gif">
+	</div>
+	<p name="secret" style="color:white;cursor:default;">↑↑↓↓←→←→BA</p>
+</div>
+<center>
+<hr style="width:850px;">
+<div id="bosstitle">
+	<p name="titles" style="font-size:14pt;font-weight:600;">庄家</p>
+</div>
+<div id="bosstable"></div>
+<hr style="width:800px;">
+<div id="valueboard">
+	<div name="titles" id="bossvalue" class="value" style="position:relative;left:-200px;">庄家点数：0</div>
+	<div name="titles" id="playervalue" class="value" style="position:relative;left:200px;">玩家点数：0</div>
+</div>
+<hr style="width:800px;">
+<div id="playertitle">
+	<p name="titles" style="font-size:14pt;font-weight:600;">玩家</p>
+</div>
+<div id="playertable"></div>
+<div id="actionbutton">
+	<p name="titles">
+		<input type="button" name="newround" value="开牌" onclick="newRound()">
+		<input type="button" name="getcard" value="要牌" onclick="playerGetCard(false)">
+		<input type="button" name="countcard" value="停牌" onclick="stopPlayerRound();startBossRound()">
+		<input type="button" name="doubleset" value="Double" onclick="doubleSet()">
+	</p>
+</div>
+<hr style="width;850px">
+</center>
+</div>
+<bgsound id="bgmusic" volume="-10000" loop="0" src="sound/Crowd4.mp3">
+<bgsound id="sound1" volume="-10000" src="sound/getcard.mp3">
+<bgsound id="sound2" volume="-10000" src="sound/21sound.mp3">
+<bgsound id="sound3" volume="-10000" src="sound/BJsound.mp3">
+<bgsound id="sound4" volume="-10000" src="sound/Crowd3.mp3">
+<bgsound id="sound5" volume="-10000" src="sound/Crowd1.mp3">
+<bgsound id="sound6" volume="-10000" src="sound/Crowd2.mp3">
+<bgsound id="pre" volume="-10000" loop="0" src="music/bgmusic1.mp3">
+
+<!--
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="1" height="1" id="myflash">
+<param name="movie" value="media/bgmusic1.swf">
+<param name="quality" value="high">
+<param name="scale" value="exactfit">
+<embed src="media/bgmusic1.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="1" height="1"></embed>
+</object>
+
+<embed src="music/bgmusic1.mp3" hidden="true" loop="-1" autostart="false" type="audio/x-mpeg">
+<embed src="music/bgmusic2.mp3" hidden="true" loop="-1" autostart="false" type="audio/x-mpeg">
+<embed src="music/bgmusic3.mp3" hidden="true" loop="-1" autostart="false" type="audio/x-mpeg">
+<embed src="music/bgmusic4.mp3" hidden="true" loop="-1" autostart="false" type="audio/x-mpeg">
+<embed src="music/bgmusic5.mp3" hidden="true" loop="-1" autostart="false" type="audio/x-mpeg">
+<embed src="media/bgmusic6.swf" hidden="true" loop="-1" autostart="false" volume="-5000">
+!-->
+<div id="imageloadarea" style="display:none;">
+<img src="blackjack_files/Spade100.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Spade200.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Spade300.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Spade400.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Spade500.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Spade600.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Spade700.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Spade800.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Spade900.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Spade101.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Spade110.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Spade120.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Spade130.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Heart100.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Heart200.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Heart300.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Heart400.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Heart500.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Heart600.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Heart700.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Heart800.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Heart900.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Heart101.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Heart110.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Heart120.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Heart130.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Club1000.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Club2000.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Club3000.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Club4000.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Club5000.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Club6000.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Club7000.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Club8000.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Club9000.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Club1001.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Club1100.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Club1200.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Club1300.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Diamond1.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Diamond2.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Diamond3.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Diamond4.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Diamond5.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Diamond6.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Diamond7.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Diamond8.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Diamond9.gif" onload="cardLoadReport()">
+<img src="blackjack_files/DiamondA.gif" onload="cardLoadReport()">
+<img src="blackjack_files/DiamondB.gif" onload="cardLoadReport()">
+<img src="blackjack_files/DiamondC.gif" onload="cardLoadReport()">
+<img src="blackjack_files/DiamondD.gif" onload="cardLoadReport()">
+<img src="blackjack_files/Back0000.jpg">
+</div>
+</body>
+</html>
+<!-- This document saved from http://home.ustc.edu.cn/~kkjames/game/blackjack/ -->

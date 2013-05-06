@@ -1,0 +1,14 @@
+input {cursor:pointer;background-color:green;color:yellow;display:none;}
+.controller {display:inline;width:71px;background-color:orange;color:blue;font-size:10pt;font-weight:600;}
+.colorbox {display:inline;width:18px;height:18px;}
+hr {width:800px;margin:0.2cm;}
+p {text-align:center;margin:0.3cm;}
+#bosstable {position:relative;top:1px;width:800px;height:172px;background-image:url("bosstabl.png");background-repeat:repeat-y;border:5px double white;}
+#playertable {position:relative;top:1px;width:800px;height:172px;background-image:url("playerta.png");background-repeat:repeat-y;border:5px double white;}
+img {margin:0.2cm;}
+#bosstable img {float:left;}
+#playertable img {float:right;}
+#board {position:absolute;top:175px;right:30px;}
+td {text-align:right;}
+.value {font-size:14pt;color:green;font-weight:600;border:2px dashed white;width:140px;}
+input {width:70px;height:25px;font-size:11pt;}
